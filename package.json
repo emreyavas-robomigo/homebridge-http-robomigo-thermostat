@@ -21,11 +21,9 @@
     "homebridge": ">=0.4.0"
   },
   "dependencies": {
-    "homebridge-http-base": "~2.1.8"
+    "homebridge-http-base": "~2.1.8",
+     "request": ">=2.88.0",
+    "ip": ">=1.1.5"
   },
-  "devDependencies": {
-      "request": ">=2.88.0",
-    "ip": ">=1.1.5",
-    "homebridge": "^1.0.4"
-  }
+
 }
