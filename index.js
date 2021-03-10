@@ -1,12 +1,19 @@
-var Service, Characteristic
+var Service, Characteristic, api;
 const packageJson = require('./package.json')
 const request = require('request')
 const ip = require('ip')
 const http = require('http')
 
+
+//ekliyorum
+const _http_base = require("homebridge-http-base");
+const notifications = _http_base.notifications;
+//ekliyorum.
+
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service
-  Characteristic = homebridge.hap.Characteristic
+  Characteristic = homebridge.hap.Characteristic;
+        api = homebridge;
   homebridge.registerAccessory('homebridge-http-robomigo-thermostat', 'HTTP-THERMOSTAT', Thermostat)
 }
 
@@ -67,9 +74,56 @@ function Thermostat (log, config) {
   }
 
   this.service = new Service.Thermostat(this.name)
+    
+    
+    notifications.enqueueNotificationRegistrationIfDefined(api, log, config.notifcurrentTemperature, config.notificationPassword, this.handleNotificationcurrentTemperature.bind(this));
+    
+        notifications.enqueueNotificationRegistrationIfDefined(api, log, config.notiftargetTemperature, config.notificationPassword, this.handleNotificationtargetTemperature.bind(this));
+    
+    
+     notifications.enqueueNotificationRegistrationIfDefined(api, log, config.notifcurrentHeatingCoolingState, config.notificationPassword, this.handleNotificationcurrentHeatingCoolingState.bind(this));
+    
+    notifications.enqueueNotificationRegistrationIfDefined(api, log, config.notiftargetHeatingCoolingState, config.notificationPassword, this.handleNotificationtargetHeatingCoolingState.bind(this));
+    
 }
 
 Thermostat.prototype = {
+    
+    handleNotificationtargetHeatingCoolingState: function(body) {
+      
+
+       this.service.getCharacteristic(Characteristic.TargetHeatingCoolingState).updateValue(body.value)
+        this.log.debug('Updated TargetHeatingCoolingState to: %s', body.value)
+          
+        
+    },
+    
+      handleNotificationcurrentTemperature: function(body) {
+      
+
+       this.service.getCharacteristic(Characteristic.CurrentTemperature).updateValue(body.value)
+        this.log.debug('Updated CurrentTemperature to: %s', body.value)
+          
+        
+    },
+    
+     handleNotificationtargetTemperature: function(body) {
+      
+
+       this.service.getCharacteristic(Characteristic.TargetTemperature).updateValue(body.value)
+        this.log.debug('Updated TargetTemperature to: %s', body.value)
+          
+        
+    },
+    
+     handleNotificationcurrentHeatingCoolingState: function(body) {
+      
+
+       this.service.getCharacteristic(Characteristic.CurrentHeatingCoolingState).updateValue(body.value)
+        this.log.debug('Updated CurrentHeatingCoolingState to: %s', body.value)
+          
+        
+    },
 
   identify: function (callback) {
     this.log('Identify requested!')
