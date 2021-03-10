@@ -24,6 +24,6 @@
     "homebridge-http-base": "~2.1.8",
      "request": ">=2.88.0",
     "ip": ">=1.1.5"
-  },
+  }
 
 }
