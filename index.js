@@ -3,7 +3,7 @@ const packageJson = require('./package.json')
 const request = require('request')
 const ip = require('ip')
 const http = require('http')
-
+ const {EventEmitter} = require('events');
 
 //ekliyorum
 const _http_base = require("homebridge-http-base");
@@ -11,6 +11,8 @@ const notifications = _http_base.notifications;
 //ekliyorum.
 
 module.exports = function (homebridge) {
+    
+    EventEmitter.defaultMaxListeners = 100;
   Service = homebridge.hap.Service
   Characteristic = homebridge.hap.Characteristic;
         api = homebridge;
